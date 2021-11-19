@@ -6,8 +6,8 @@ output: github_document
 ---
 
 ## Problem 0
---create my public Github repo and local R with a single .Rmd file that renders to github_document
---create a sub-directory to store the local data files used in the assignment, and use relative paths to access these data files
+# create my public Github repo and local R with a single .Rmd file that renders to github_document
+# create a sub-directory to store the local data files used in the assignment, and use relative paths to access these data files
 ```{r setup, include=FALSE}
 library(tidyverse)
 library(viridis)
@@ -130,6 +130,8 @@ exp_df =
     id = factor(id), 
     weeks = factor(weeks)
   ) 
+
+head(exp_df)
 ```
 
 ```{r spaghetti plot}
@@ -144,9 +146,8 @@ exp_df %>%
     y = "Observed data"
   )
 ```
-**Comments:** In the beginning of the experiment, the longitudinal data observed both in the control group and the experimental group are quite similar, which is around 1.5. Following along, `exp` arm is generally higher than observations in `con` arm. A t-test with _alternative hypothesis_: true difference in means between group exp and group con is greater than 0 can support the difference between arms. Since **p.value = `r t.test(observation ~ arm, data = exp_df, alternative = "greater")$p.value`** is smaller than a significant level at 5%, we can conclude that the experimental arm and control arm are significantly different from each other. So the experimental arm may have a positive impact on the longitudinal data.
+**Comments:** In the beginning of the experiment, the longitudinal data observed both in the control group and the experimental group are quite similar, which is around 1.5. Following along, `exp` arm is generally higher than observations in `con` arm. A t-test with _alternative hypothesis_: true difference in means between group exp and group con is greater than 0 can support the assumption about difference between arms. Since **p.value = `r t.test(observation ~ arm, data = exp_df, alternative = "greater")$p.value`** is smaller than a significant level at 5%, we can conclude that the experimental arm and control arm are significantly different from each other. So the experimental arm may have a positive impact on the longitudinal data.
 
-## Problem 3 iris dataset
 ## Problem 3 iris dataset
 ```{r}
 set.seed(10)
