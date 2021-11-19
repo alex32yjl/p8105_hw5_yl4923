@@ -145,3 +145,35 @@ exp_df %>%
   )
 ```
 **Comments:** In the beginning of the experiment, the longitudinal data observed both in the control group and the experimental group are quite similar, which is around 1.5. Following along, `exp` arm is generally higher than observations in `con` arm. A t-test with _alternative hypothesis_: true difference in means between group exp and group con is greater than 0 can support the difference between arms. Since **p.value = `r t.test(observation ~ arm, data = exp_df, alternative = "greater")$p.value`** is smaller than a significant level at 5%, we can conclude that the experimental arm and control arm are significantly different from each other. So the experimental arm may have a positive impact on the longitudinal data.
+
+## Problem 3 iris dataset
+## Problem 3 iris dataset
+```{r}
+set.seed(10)
+
+iris_with_missing = 
+  iris %>% 
+  map_df(~replace(.x, sample(1:150, 20), NA)) %>%
+  mutate(Species = as.character(Species)) %>% 
+  janitor::clean_names()
+```
+
+```{r function}
+# write a function(vector output+ for numeric variables,with the mean of non-missing values; for character variables, with "virginica"))
+
+replace_missing = function(x) {
+  
+  if (is.numeric(x)) {
+    x[is.na(x)] = mean(x, na.rm = TRUE)
+  } else if (is.character(x)) {
+    x[is.na(x)] = "virginica"
+  } else {
+    stop("Argument x should be numeric or character")
+  }
+  x
+}
+
+# apply to iris data
+iris_complete = map_df(iris_with_missing, replace_missing)
+iris_complete
+```
