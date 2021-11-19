@@ -98,3 +98,15 @@ nested_df =
   unnest(tidy_results) %>%
   select(city_state, estimate, starts_with("conf"))
 ```
+
+```{r}
+# 1.4 Create a plot that shows the estimates and CIs for each city. Organize cities according to the proportion of unsolved homicides.
+nested_df %>% 
+  mutate(city_state = fct_reorder(city_state, estimate)) %>%
+  ggplot(aes(x = city_state, y = estimate)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high)) +
+  labs( title = "The proportion of unsolved homicides and the confidence interval for each city",
+        x = "City, State") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+```
