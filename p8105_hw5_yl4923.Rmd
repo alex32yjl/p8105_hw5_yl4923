@@ -45,3 +45,26 @@ homi_stat =
 
 knitr::kable(homi_stat)
 ```
+
+```{r}
+# 1.2 prop.test function for Baltimore
+baltimore_df = 
+  homi_df %>%
+  filter(city_state == "BaltimoreMD")
+
+baltimore_summary = 
+  baltimore_df %>% 
+  summarize(
+    unsolved = sum(resolution == "unsolved"),
+    n = n())
+
+baltimore_test = 
+  prop.test(
+    x = baltimore_summary %>% pull(unsolved),
+    n = baltimore_summary %>% pull(n)
+)
+
+baltimore_test %>% 
+  broom::tidy()
+```
+
