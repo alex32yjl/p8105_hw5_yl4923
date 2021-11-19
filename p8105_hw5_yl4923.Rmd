@@ -1,0 +1,17 @@
+---
+title: 'p8105_hw5_yl4923 pre'
+author: "Yujia Li"
+date: "11/19/2021"
+output: github_document
+---
+
+## Problem 0
+--create my public Github repo and local R with a single .Rmd file that renders to github_document
+--create a sub-directory to store the local data files used in the assignment, and use relative paths to access these data files
+```{r setup, include=FALSE}
+library(tidyverse)
+library(viridis)
+library(p8105.datasets)
+
+knitr::opts_chunk$set(echo = TRUE)
+```
