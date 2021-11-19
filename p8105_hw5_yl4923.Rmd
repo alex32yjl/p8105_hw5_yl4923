@@ -116,7 +116,7 @@ nested_df %>%
 # 2.1 Read in and tidy data with new variables-arm,ID
 exp_df = 
   tibble(file_name = list.files("./data/problem2data/", pattern = "*")) %>% 
-  mutate(data = map(.x = str_c("./data/problem2data/", file_name, sep = ""), ~ read.csv(.x))) %>% # read data
+  mutate(data = map(.x = str_c("./data/problem2data/", file_name, sep = ""), ~ read.csv(.x))) %>%
   separate(file_name, into = c("filename", "postfix"), sep = "\\.") %>% 
   select(-postfix) %>% 
   separate(filename, into = c("arm", "id"), sep = "_", remove = F) %>%
@@ -131,3 +131,17 @@ exp_df =
     weeks = factor(weeks)
   ) 
 ```
+
+```{r spaghetti plot}
+# 2.2 Observations on each subject over time, and comment on differences between groups.
+exp_df %>%
+  ggplot(aes(x = weeks, y = observation, color = arm)) +
+  geom_path(aes(group = id)) +
+  geom_point(alpha = .5) + 
+  labs(
+    title = "Longitudinal study plot",
+    x = "Time (week)",
+    y = "Observed data"
+  )
+```
+**Comments:** In the beginning of the experiment, the longitudinal data observed both in the control group and the experimental group are quite similar, which is around 1.5. Following along, `exp` arm is generally higher than observations in `con` arm. A t-test with _alternative hypothesis_: true difference in means between group exp and group con is greater than 0 can support the difference between arms. Since **p.value = `r t.test(observation ~ arm, data = exp_df, alternative = "greater")$p.value`** is smaller than a significant level at 5%, we can conclude that the experimental arm and control arm are significantly different from each other. So the experimental arm may have a positive impact on the longitudinal data.
