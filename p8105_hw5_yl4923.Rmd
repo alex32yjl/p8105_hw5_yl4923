@@ -110,3 +110,24 @@ nested_df %>%
         x = "City, State") +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
 ```
+
+## Problem 2 longtitude study
+```{r}
+# 2.1 Read in and tidy data with new variables-arm,ID
+exp_df = 
+  tibble(file_name = list.files("./data/problem2data/", pattern = "*")) %>% 
+  mutate(data = map(.x = str_c("./data/problem2data/", file_name, sep = ""), ~ read.csv(.x))) %>% # read data
+  separate(file_name, into = c("filename", "postfix"), sep = "\\.") %>% 
+  select(-postfix) %>% 
+  separate(filename, into = c("arm", "id"), sep = "_", remove = F) %>%
+  unnest() %>% 
+  gather(key = weeks, value = observation, week_1:week_8) %>% 
+  separate(weeks, into = c("prefix", "weeks"), sep = "_") %>% 
+  select(-prefix) %>%
+  select(id, arm, weeks, observation) %>% 
+  mutate(
+    arm = factor(arm, levels = c("exp", "con")), 
+    id = factor(id), 
+    weeks = factor(weeks)
+  ) 
+```
